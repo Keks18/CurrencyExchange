@@ -14,12 +14,8 @@ public class CurrencyServiceImpl implements CurrencyService{
     }
 
     @Override
-    public List<Currency> getAll() {
-        try {
+    public List<Currency> getAll() throws SQLException {
             return currencyDAO.findAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -28,11 +24,7 @@ public class CurrencyServiceImpl implements CurrencyService{
     }
 
     @Override
-    public Currency findByCode(String code) {
-        try {
+    public Currency findByCode(String code) throws SQLException {
             return currencyDAO.findByCode(code);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

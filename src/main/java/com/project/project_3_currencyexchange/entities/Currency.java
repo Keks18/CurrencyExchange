@@ -48,6 +48,9 @@ public class Currency {
         this.sign = sign;
     }
 
+    public boolean isEmpty() {
+        return id == null && (code == null || code.isEmpty()) && (fullName == null || fullName.isEmpty()) && (sign == null || sign.isEmpty());
+    }
     @Override
     public String toString() {
         return "Currency{" +

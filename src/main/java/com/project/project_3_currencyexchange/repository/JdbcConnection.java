@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class JdbcConnection {
     Connection connection;
-    public void startDb() {
+    public void startDb() throws SQLException {
         String jdbcUrl = "jdbc:mysql://localhost:3306/currencyexchange?useSSL=false&serverTimezone=UTC";
         String username = "bestuser";
         String password = "bestuser";
@@ -18,8 +18,6 @@ public class JdbcConnection {
 
         } catch (ClassNotFoundException e) {
             System.out.println("Драйвер MySQL не найден!");
-        } catch (SQLException e) {
-            System.out.println("Ошибка при подключении к базе данных: " + e.getMessage());
         }
     }
 
