@@ -14,17 +14,27 @@ public class CurrencyServiceImpl implements CurrencyService{
     }
 
     @Override
-    public List<Currency> getAll() throws SQLException {
+    public List<Currency> findAll() throws SQLException {
             return currencyDAO.findAll();
-    }
-
-    @Override
-    public Currency getById(Integer id) {
-        return new com.project.project_3_currencyexchange.entities.Currency(id, "USD", "US Dollar", "$");
     }
 
     @Override
     public Currency findByCode(String code) throws SQLException {
             return currencyDAO.findByCode(code);
+    }
+
+    @Override
+    public Currency findById(Integer id) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public void update(Currency currency) throws SQLException {
+
+    }
+
+    @Override
+    public void save(Currency currency) throws SQLException {
+        currencyDAO.save(currency);
     }
 }

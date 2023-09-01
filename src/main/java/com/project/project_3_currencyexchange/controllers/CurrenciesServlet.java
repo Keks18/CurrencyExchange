@@ -4,6 +4,7 @@ import com.project.project_3_currencyexchange.entities.Currency;
 import com.project.project_3_currencyexchange.exceptions.ServletExceptions;
 import com.project.project_3_currencyexchange.services.CurrencyService;
 import com.project.project_3_currencyexchange.services.CurrencyServiceImpl;
+import com.project.project_3_currencyexchange.utils.JsonTransformer;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,6 @@ import java.util.List;
 @WebServlet(name = "currenciesServlet", value = "/currencies")
 public class CurrenciesServlet extends HttpServlet {
     CurrencyService currencyService = new CurrencyServiceImpl();
-
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
@@ -25,7 +25,7 @@ public class CurrenciesServlet extends HttpServlet {
 
         List<Currency> currencies;
         try {
-            currencies = currencyService.getAll();
+            currencies = currencyService.findAll();
         } catch (SQLException e) {
             ServletExceptions.databaseOperationFail(resp, e);
             return;
@@ -36,6 +36,6 @@ public class CurrenciesServlet extends HttpServlet {
             return;
         }
 
-        currencies.stream().forEach(e -> writer.println(e));
+        writer.println(JsonTransformer.transformToJson(currencies));
     }
 }

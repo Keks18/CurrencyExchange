@@ -3,10 +3,7 @@ package com.project.project_3_currencyexchange.dao;
 import com.project.project_3_currencyexchange.entities.Currency;
 import com.project.project_3_currencyexchange.repository.JdbcConnection;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +12,7 @@ public class CurrencyDAOJdbc implements CurrencyDAO {
 
     public CurrencyDAOJdbc() {
     }
-
+    //TODO Refactor to prepared
     @Override
     public List<Currency> findAll() throws SQLException {
         List<Currency> currencies = new ArrayList<>();
@@ -52,14 +49,28 @@ public class CurrencyDAOJdbc implements CurrencyDAO {
 
     @Override
     public void save(Currency currency) throws SQLException {
+        jdbcConnection.startDb();
+        String sql = "INSERT INTO currencyexchange.currencies (Code, FullName, Sign) VALUES (?, ?, ?);";
+        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql)
+        ) {
+            statement.setString(1, currency.getCode());
+            statement.setString(2, currency.getFullName());
+            statement.setString(3, currency.getSign());
+            int rowsAffected  = statement.executeUpdate();
 
+            if (rowsAffected  != 1){
+                throw new SQLIntegrityConstraintViolationException("Ошибка нарушения ограничения целостности данных");
+            }
+        } finally {
+            jdbcConnection.endDb();
+        }
     }
     @Override
     public Currency findByCode(String code) throws SQLException {
         Currency currency = new Currency();
         jdbcConnection.startDb();
         String sql = "SELECT * FROM currencyexchange.currencies WHERE Code = ?";
-        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
+        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql)
              ) {
             statement.setString(1, code);
             ResultSet resultSet = statement.executeQuery();
