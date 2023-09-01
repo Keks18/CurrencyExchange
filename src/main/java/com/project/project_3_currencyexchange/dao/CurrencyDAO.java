@@ -1,10 +1,10 @@
 package com.project.project_3_currencyexchange.dao;
 
 import com.project.project_3_currencyexchange.entities.Currency;
-import java.util.List;
+import com.project.project_3_currencyexchange.repository.CrudRepository;
 
-public interface CurrencyDAO {
-    public List<Currency> getAllCurrencies();
-    public Currency getCurrencyById(Integer id);
-    public void saveOrUpdateCurrency(Currency currency);
+import java.sql.SQLException;
+
+public interface CurrencyDAO extends CrudRepository<Currency> {
+    Currency findByCode(String code) throws SQLException;
 }
