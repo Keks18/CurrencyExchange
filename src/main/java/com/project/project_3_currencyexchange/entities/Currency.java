@@ -9,13 +9,6 @@ public class Currency {
     public Currency() {
     }
 
-    public Currency(Integer id, String code, String fullName, String sign) {
-        this.id = id;
-        this.code = code;
-        this.fullName = fullName;
-        this.sign = sign;
-    }
-
     public Integer getId() {
         return id;
     }

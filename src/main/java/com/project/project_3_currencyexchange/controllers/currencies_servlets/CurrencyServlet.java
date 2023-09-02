@@ -1,4 +1,4 @@
-package com.project.project_3_currencyexchange.controllers;
+package com.project.project_3_currencyexchange.controllers.currencies_servlets;
 
 import com.project.project_3_currencyexchange.entities.Currency;
 import com.project.project_3_currencyexchange.exceptions.ServletExceptions;

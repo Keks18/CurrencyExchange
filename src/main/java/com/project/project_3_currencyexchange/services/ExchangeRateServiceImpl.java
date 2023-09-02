@@ -1,15 +1,17 @@
-package com.project.project_3_currencyexchange.dao;
+package com.project.project_3_currencyexchange.services;
 
+import com.project.project_3_currencyexchange.dao.ExchangeRateDAO;
+import com.project.project_3_currencyexchange.dao.ExchangeRateDAOJdbc;
 import com.project.project_3_currencyexchange.entities.ExchangeRate;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class ExchangeRateDAOImpl implements ExchangeRateDAO{
-
+public class ExchangeRateServiceImpl implements ExchangeRateService{
+    ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAOJdbc();
     @Override
     public List<ExchangeRate> findAll() throws SQLException {
-        return null;
+        return exchangeRateDAO.findAll();
     }
 
     @Override
@@ -24,6 +26,11 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO{
 
     @Override
     public ExchangeRate save(ExchangeRate exchangeRate) throws SQLException {
-        return exchangeRate;
+        return null;
+    }
+
+    @Override
+    public ExchangeRate findByCode(String code) throws SQLException {
+        return null;
     }
 }
