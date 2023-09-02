@@ -34,7 +34,7 @@ public class CurrencyServiceImpl implements CurrencyService{
     }
 
     @Override
-    public void save(Currency currency) throws SQLException {
-        currencyDAO.save(currency);
+    public Currency save(Currency currency) throws SQLException {
+        return currencyDAO.save(currency);
     }
 }

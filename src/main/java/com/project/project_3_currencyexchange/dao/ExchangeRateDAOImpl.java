@@ -23,7 +23,7 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO{
     }
 
     @Override
-    public void save(ExchangeRate exchangeRate) throws SQLException {
-
+    public ExchangeRate save(ExchangeRate exchangeRate) throws SQLException {
+        return exchangeRate;
     }
 }

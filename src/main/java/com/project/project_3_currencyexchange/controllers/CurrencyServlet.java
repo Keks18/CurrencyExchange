@@ -42,25 +42,5 @@ public class CurrencyServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        Currency currency = new Currency();
-        currency.setSign(req.getParameter("code"));
-        currency.setCode(req.getParameter("sign"));
-        currency.setFullName(req.getParameter("name"));
-        if (currency.isEmpty()){
-            //TODO do normal exception to this situation
-            ServletExceptions.emptyCurrencyCode(resp);
-        }
-        try {
-            currencyService.save(currency);
-            System.out.println(currency);
-        } catch (SQLException e) {
-            //TODO тут поменять как в тз ошибка 409 создать новый ексепш
-            ServletExceptions.databaseOperationFail(resp, e);
-        }
-        PrintWriter writer = resp.getWriter();
-        writer.println(JsonTransformer.transformToJson(currency));
-    }
+
 }

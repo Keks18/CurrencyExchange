@@ -12,15 +12,14 @@ public class CurrencyDAOJdbc implements CurrencyDAO {
 
     public CurrencyDAOJdbc() {
     }
-    //TODO Refactor to prepared
     @Override
     public List<Currency> findAll() throws SQLException {
         List<Currency> currencies = new ArrayList<>();
 
         jdbcConnection.startDb();
         String sql = "SELECT * FROM currencyexchange.currencies;";
-        try (Statement statement = jdbcConnection.getConnection().createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 Currency currency = new Currency();
 
@@ -48,7 +47,7 @@ public class CurrencyDAOJdbc implements CurrencyDAO {
     }
 
     @Override
-    public void save(Currency currency) throws SQLException {
+    public Currency save(Currency currency) throws SQLException {
         jdbcConnection.startDb();
         String sql = "INSERT INTO currencyexchange.currencies (Code, FullName, Sign) VALUES (?, ?, ?);";
         try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql)
@@ -64,6 +63,7 @@ public class CurrencyDAOJdbc implements CurrencyDAO {
         } finally {
             jdbcConnection.endDb();
         }
+        return findByCode(currency.getCode());
     }
     @Override
     public Currency findByCode(String code) throws SQLException {
