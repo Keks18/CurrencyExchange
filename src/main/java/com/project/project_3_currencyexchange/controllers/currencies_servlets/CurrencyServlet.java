@@ -41,6 +41,4 @@ public class CurrencyServlet extends HttpServlet {
             ServletExceptions.emptyCurrencyCode(resp);
         }
     }
-
-
 }

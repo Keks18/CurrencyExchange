@@ -42,4 +42,11 @@ public class ExchangeRate {
     public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
+
+    public boolean isEmpty() {
+        return id == null &&
+                baseCurrencyId == null &&
+                targetCurrencyId == null &&
+                rate == null;
+    }
 }

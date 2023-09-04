@@ -30,7 +30,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService{
     }
 
     @Override
-    public ExchangeRate findByCode(String code) throws SQLException {
-        return null;
+    public ExchangeRate findByCode(String code1, String code2) throws SQLException {
+        return exchangeRateDAO.findByCode(code1, code2);
     }
 }
