@@ -27,4 +27,5 @@ public class ServletExceptions {
         resp.setStatus(HttpServletResponse.SC_CONFLICT);
         resp.sendError(HttpServletResponse.SC_CONFLICT, "Валюта с таким кодом уже существует ");
     }
+
 }

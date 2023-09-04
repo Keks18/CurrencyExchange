@@ -47,8 +47,8 @@ public class CurrenciesServlet extends HttpServlet {
         Currency currencyReq = new Currency();
         Currency currencyResp;
 
-        currencyReq.setSign(req.getParameter("code"));
-        currencyReq.setCode(req.getParameter("sign"));
+        currencyReq.setSign(req.getParameter("sign"));
+        currencyReq.setCode(req.getParameter("code"));
         currencyReq.setFullName(req.getParameter("name"));
 
         // Check if any of the fields (code, sign, fullName) in the 'currency' object is null or empty.

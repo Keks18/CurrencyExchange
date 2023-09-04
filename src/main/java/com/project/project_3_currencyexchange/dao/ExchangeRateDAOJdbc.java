@@ -7,6 +7,7 @@ import com.project.project_3_currencyexchange.repository.JdbcConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +75,28 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
 
     @Override
     public ExchangeRate save(ExchangeRate exchangeRate) throws SQLException {
-        return exchangeRate;
+        jdbcConnection.startDb();
+        Currency currencyBase = exchangeRate.getBaseCurrencyId();
+        Currency currencyTarget = exchangeRate.getTargetCurrencyId();
+
+        currencyBase.setId(getIdFromDatabase(currencyBase));
+        currencyTarget.setId(getIdFromDatabase(currencyTarget));
+
+        String sql = "INSERT INTO currencyexchange.exchangerates (BaseCurrencyId, TargetCurrencyId, Rate) VALUES (?, ?, ?);";
+        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql)
+        ) {
+            statement.setInt(1, exchangeRate.getBaseCurrencyId().getId());
+            statement.setInt(2, exchangeRate.getTargetCurrencyId().getId());
+            statement.setBigDecimal(3, exchangeRate.getRate());
+            int rowsAffected  = statement.executeUpdate();
+
+            if (rowsAffected  != 1){
+                throw new SQLIntegrityConstraintViolationException("Ошибка нарушения ограничения целостности данных");
+            }
+        } finally {
+            jdbcConnection.endDb();
+        }
+        return findByCode(exchangeRate.getBaseCurrencyId().getCode(), exchangeRate.getTargetCurrencyId().getCode());
     }
     @Override
     public ExchangeRate findByCode(String code1, String code2) throws SQLException {
@@ -125,5 +147,17 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
             jdbcConnection.endDb();
         }
         return exchangeRate;
+    }
+    private int getIdFromDatabase(Currency currency) throws SQLException {
+        String sql1 = "select ID from currencies where Code = ?;";
+        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql1)
+        ) {
+            statement.setString(1, currency.getCode());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()){
+                currency.setId(resultSet.getInt("id"));
+            }
+        }
+        return currency.getId();
     }
 }

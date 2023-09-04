@@ -26,7 +26,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService{
 
     @Override
     public ExchangeRate save(ExchangeRate exchangeRate) throws SQLException {
-        return null;
+        return exchangeRateDAO.save(exchangeRate);
     }
 
     @Override
