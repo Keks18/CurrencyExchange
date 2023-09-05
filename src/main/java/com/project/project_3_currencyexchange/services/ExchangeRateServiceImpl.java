@@ -4,6 +4,7 @@ import com.project.project_3_currencyexchange.dao.ExchangeRateDAO;
 import com.project.project_3_currencyexchange.dao.ExchangeRateDAOJdbc;
 import com.project.project_3_currencyexchange.entities.ExchangeRate;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class ExchangeRateServiceImpl implements ExchangeRateService{
     }
 
     @Override
-    public void update(ExchangeRate exchangeRate) throws SQLException {
-
+    public ExchangeRate update(BigDecimal rate, String code1, String code2) throws SQLException {
+        return exchangeRateDAO.update(rate,code1,code2);
     }
 
     @Override

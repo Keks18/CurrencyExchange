@@ -4,6 +4,7 @@ import com.project.project_3_currencyexchange.dao.CurrencyDAO;
 import com.project.project_3_currencyexchange.dao.CurrencyDAOJdbc;
 import com.project.project_3_currencyexchange.entities.Currency;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -29,8 +30,8 @@ public class CurrencyServiceImpl implements CurrencyService{
     }
 
     @Override
-    public void update(Currency currency) throws SQLException {
-
+    public Currency update(BigDecimal rate, String code1, String code2) throws SQLException {
+        return null;
     }
 
     @Override

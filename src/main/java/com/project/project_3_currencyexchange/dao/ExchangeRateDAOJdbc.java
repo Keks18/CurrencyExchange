@@ -4,10 +4,8 @@ import com.project.project_3_currencyexchange.entities.Currency;
 import com.project.project_3_currencyexchange.entities.ExchangeRate;
 import com.project.project_3_currencyexchange.repository.JdbcConnection;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.math.BigDecimal;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,8 +67,29 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
     }
 
     @Override
-    public void update(ExchangeRate exchangeRate) throws SQLException {
+    public ExchangeRate update(BigDecimal rate, String code1, String code2) throws SQLException {
+        jdbcConnection.startDb();
+        String sql = "UPDATE exchangerates as e " +
+                "INNER JOIN Currencies b ON e.BaseCurrencyId = b.ID " +
+                "INNER JOIN Currencies t ON e.TargetCurrencyId = t.ID " +
+                "SET e.Rate = ? " +
+                "WHERE b.Code = ? and t.Code = ?;";
 
+       try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
+             ) {
+           statement.setBigDecimal(1, rate);
+           statement.setString(2, code1);
+           statement.setString(3, code2);
+           int res = statement.executeUpdate();
+
+           if (res != 1){
+               throw new SQLSyntaxErrorException();
+           }
+
+       } finally {
+           jdbcConnection.endDb();
+       }
+        return findByCode(code1, code2);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.project.project_3_currencyexchange.dao;
 import com.project.project_3_currencyexchange.entities.Currency;
 import com.project.project_3_currencyexchange.repository.JdbcConnection;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +43,8 @@ public class CurrencyDAOJdbc implements CurrencyDAO {
     }
 
     @Override
-    public void update(Currency currency) throws SQLException {
-
+    public Currency update(BigDecimal rate, String code1, String code2) throws SQLException {
+        return null;
     }
 
     @Override
