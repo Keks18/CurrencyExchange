@@ -39,6 +39,7 @@ public class CurrenciesServlet extends HttpServlet {
         }
 
         writer.println(JsonTransformer.transformToJson(currencies));
+        writer.close();
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -74,5 +75,6 @@ public class CurrenciesServlet extends HttpServlet {
         }
 
         writer.println(JsonTransformer.transformToJson(currencyResp));
+        writer.close();
     }
 }

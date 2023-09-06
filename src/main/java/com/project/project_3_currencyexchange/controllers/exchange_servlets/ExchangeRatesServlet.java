@@ -36,6 +36,7 @@ public class ExchangeRatesServlet extends HttpServlet {
         }
 
         writer.println(JsonTransformer.transformToJson(exchangeRates));
+        writer.close();
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -73,5 +74,6 @@ public class ExchangeRatesServlet extends HttpServlet {
         }
 
         writer.println(JsonTransformer.transformToJson(exchangeResp));
+        writer.close();
     }
 }
