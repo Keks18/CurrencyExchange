@@ -3,6 +3,7 @@ package com.project.project_3_currencyexchange.dto;
 import com.project.project_3_currencyexchange.entities.ExchangeRate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class ExchangeDTO extends ExchangeRate {
     private BigDecimal amount;
@@ -27,6 +28,6 @@ public class ExchangeDTO extends ExchangeRate {
         this.convertedAmount = convertedAmount;
     }
     public void exchangeCurrency(){
-        this.convertedAmount = getAmount().multiply(getRate());
+        this.convertedAmount = getAmount().multiply(getRate()).setScale(2, RoundingMode.HALF_UP);
     }
 }

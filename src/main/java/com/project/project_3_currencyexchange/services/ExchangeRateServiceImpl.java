@@ -6,6 +6,7 @@ import com.project.project_3_currencyexchange.dto.ExchangeDTO;
 import com.project.project_3_currencyexchange.entities.ExchangeRate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -43,7 +44,28 @@ public class ExchangeRateServiceImpl implements ExchangeRateService{
         exchangeDTO.setAmount(amount);
         exchangeDTO.setBaseCurrencyId(currencyService.findByCode(from));
         exchangeDTO.setTargetCurrencyId(currencyService.findByCode(to));
-        exchangeDTO.setRate(findByCode(from, to).getRate());
+
+        if (findByCode(from, to).getRate() != null){
+            exchangeDTO.setRate(findByCode(from, to).getRate());
+        }
+
+        if (findByCode(to, from).getRate() != null){
+            BigDecimal rateToFrom = findByCode(to, from).getRate();
+            BigDecimal rateFromTo = BigDecimal.ONE.divide(rateToFrom, 6, RoundingMode.HALF_UP);
+            exchangeDTO.setRate(rateFromTo);
+        }
+
+        if (
+                (findByCode("USD", from).getRate() != null)
+                &&
+                (findByCode("USD", from).getRate()) != null)
+        {
+            BigDecimal rateUsdFrom = findByCode("USD", from).getRate();
+            BigDecimal rateUsdTo = findByCode("USD", to).getRate();
+            BigDecimal rate = rateUsdTo.divide(rateUsdFrom, 6, RoundingMode.HALF_UP);
+            exchangeDTO.setRate(rate);
+        }
+
         exchangeDTO.exchangeCurrency();
         return exchangeDTO;
     }

@@ -144,7 +144,6 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                exchangeRate.setId(resultSet.getInt("id"));
 
                 Currency baseCurrency = new Currency();
                 baseCurrency.setId(resultSet.getInt("BaseCurrencyId"));
@@ -160,6 +159,7 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
                 targetCurrency.setFullName(resultSet.getString("TargetCurrencyFullName"));
                 exchangeRate.setTargetCurrencyId(targetCurrency);
 
+                exchangeRate.setId(resultSet.getInt("id"));
                 exchangeRate.setRate(resultSet.getBigDecimal("Rate"));
             }
         } finally {
