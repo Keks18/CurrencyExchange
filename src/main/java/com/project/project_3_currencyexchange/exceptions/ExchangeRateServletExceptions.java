@@ -8,6 +8,7 @@ public class ExchangeRateServletExceptions {
         resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Обменный курс для пары не найден ");
     }
+
     public static void duplicatedExchangeRate(HttpServletResponse resp) throws IOException {
         resp.setStatus(HttpServletResponse.SC_CONFLICT);
         resp.sendError(HttpServletResponse.SC_CONFLICT, "Валютная пара с таким кодом уже существует ");

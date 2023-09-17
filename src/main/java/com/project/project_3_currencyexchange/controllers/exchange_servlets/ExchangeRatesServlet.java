@@ -19,9 +19,11 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+
 @WebServlet(name = "exchangeRatesServlet", value = "/exchangeRates")
 public class ExchangeRatesServlet extends HttpServlet {
     ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
@@ -38,6 +40,7 @@ public class ExchangeRatesServlet extends HttpServlet {
         writer.println(JsonTransformer.transformToJson(exchangeRates));
         writer.close();
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
@@ -54,11 +57,10 @@ public class ExchangeRatesServlet extends HttpServlet {
         exchangeReq.setRate(new BigDecimal(req.getParameter("rate")));
 
         if (
-                        (exchangeReq.getBaseCurrencyId().getCode() == null) ||
+                (exchangeReq.getBaseCurrencyId().getCode() == null) ||
                         (exchangeReq.getTargetCurrencyId().getCode() == null) ||
                         (exchangeReq.getRate() == null)
-        )
-        {
+        ) {
             ServletExceptions.someFieldIsEmpty(resp);
             return;
         }

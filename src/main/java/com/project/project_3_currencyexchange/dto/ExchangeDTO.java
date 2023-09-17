@@ -9,9 +9,6 @@ public class ExchangeDTO extends ExchangeRate {
     private BigDecimal amount;
     private BigDecimal convertedAmount;
 
-    public ExchangeDTO() {
-    }
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -27,7 +24,8 @@ public class ExchangeDTO extends ExchangeRate {
     public void setConvertedAmount(BigDecimal convertedAmount) {
         this.convertedAmount = convertedAmount;
     }
-    public void exchangeCurrency(){
+
+    public void exchangeCurrency() {
         this.convertedAmount = getAmount().multiply(getRate()).setScale(2, RoundingMode.HALF_UP);
     }
 }

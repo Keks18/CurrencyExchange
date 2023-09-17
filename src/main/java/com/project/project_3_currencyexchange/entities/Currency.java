@@ -6,9 +6,6 @@ public class Currency {
     private String fullName;
     private String sign;
 
-    public Currency() {
-    }
-
     public Integer getId() {
         return id;
     }
@@ -43,14 +40,5 @@ public class Currency {
 
     public boolean isEmpty() {
         return id == null && (code == null || code.isEmpty()) && (fullName == null || fullName.isEmpty()) && (sign == null || sign.isEmpty());
-    }
-    @Override
-    public String toString() {
-        return "Currency{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", sign='" + sign + '\'' +
-                '}';
     }
 }

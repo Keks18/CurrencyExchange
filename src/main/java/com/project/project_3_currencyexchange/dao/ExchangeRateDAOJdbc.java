@@ -10,13 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
-    JdbcConnection jdbcConnection = new JdbcConnection();
 
     @Override
     public List<ExchangeRate> findAll() throws SQLException {
         List<ExchangeRate> exchangeRates = new ArrayList<>();
 
-        jdbcConnection.startDb();
         String sql = "SELECT" +
                 "    e.ID," +
                 "    b.ID AS BaseCurrencyId," +
@@ -32,7 +30,8 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
                 "         INNER JOIN Currencies b ON e.BaseCurrencyId = b.ID" +
                 "         INNER JOIN Currencies t ON e.TargetCurrencyId = t.ID;";
 
-        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
+        try (JdbcConnection jdbcConnection = new JdbcConnection();
+             PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 ExchangeRate exchangeRate = new ExchangeRate();
@@ -56,8 +55,6 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
                 exchangeRate.setRate(resultSet.getBigDecimal("Rate"));
                 exchangeRates.add(exchangeRate);
             }
-        } finally {
-            jdbcConnection.endDb();
         }
         return exchangeRates;
     }
@@ -69,14 +66,14 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
 
     @Override
     public ExchangeRate update(BigDecimal rate, String code1, String code2) throws SQLException {
-        jdbcConnection.startDb();
         String sql = "UPDATE exchangerates as e " +
                 "INNER JOIN Currencies b ON e.BaseCurrencyId = b.ID " +
                 "INNER JOIN Currencies t ON e.TargetCurrencyId = t.ID " +
                 "SET e.Rate = ? " +
                 "WHERE b.Code = ? and t.Code = ?;";
 
-        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
+        try (JdbcConnection jdbcConnection = new JdbcConnection();
+             PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
         ) {
             statement.setBigDecimal(1, rate);
             statement.setString(2, code1);
@@ -87,15 +84,12 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
                 throw new SQLSyntaxErrorException();
             }
 
-        } finally {
-            jdbcConnection.endDb();
         }
         return findByCode(code1, code2);
     }
 
     @Override
     public ExchangeRate save(ExchangeRate exchangeRate) throws SQLException {
-        jdbcConnection.startDb();
         Currency currencyBase = exchangeRate.getBaseCurrencyId();
         Currency currencyTarget = exchangeRate.getTargetCurrencyId();
 
@@ -103,7 +97,8 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
         currencyTarget.setId(getIdFromDatabase(currencyTarget));
 
         String sql = "INSERT INTO currencyexchange.exchangerates (BaseCurrencyId, TargetCurrencyId, Rate) VALUES (?, ?, ?);";
-        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql)
+        try (JdbcConnection jdbcConnection = new JdbcConnection();
+             PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
         ) {
             statement.setInt(1, exchangeRate.getBaseCurrencyId().getId());
             statement.setInt(2, exchangeRate.getTargetCurrencyId().getId());
@@ -113,8 +108,6 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
             if (rowsAffected != 1) {
                 throw new SQLIntegrityConstraintViolationException("Ошибка нарушения ограничения целостности данных");
             }
-        } finally {
-            jdbcConnection.endDb();
         }
         return findByCode(exchangeRate.getBaseCurrencyId().getCode(), exchangeRate.getTargetCurrencyId().getCode());
     }
@@ -122,7 +115,6 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
     @Override
     public ExchangeRate findByCode(String code1, String code2) throws SQLException {
         ExchangeRate exchangeRate = new ExchangeRate();
-        jdbcConnection.startDb();
         String sql = "SELECT" +
                 "    e.ID," +
                 "    b.ID AS BaseCurrencyId," +
@@ -139,45 +131,46 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
                 "         INNER JOIN Currencies t ON e.TargetCurrencyId = t.ID " +
                 "WHERE b.Code = ? and t.Code = ?;";
 
-        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
+        try (JdbcConnection jdbcConnection = new JdbcConnection();
+             PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
         ) {
             statement.setString(1, code1);
             statement.setString(2, code2);
-            ResultSet resultSet = statement.executeQuery();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
 
-            if (resultSet.next()) {
+                    Currency baseCurrency = new Currency();
+                    baseCurrency.setId(resultSet.getInt("BaseCurrencyId"));
+                    baseCurrency.setCode(resultSet.getString("BaseCurrencyCode"));
+                    baseCurrency.setSign(resultSet.getString("BaseCurrencySign"));
+                    baseCurrency.setFullName(resultSet.getString("BaseCurrencyFullName"));
+                    exchangeRate.setBaseCurrencyId(baseCurrency);
 
-                Currency baseCurrency = new Currency();
-                baseCurrency.setId(resultSet.getInt("BaseCurrencyId"));
-                baseCurrency.setCode(resultSet.getString("BaseCurrencyCode"));
-                baseCurrency.setSign(resultSet.getString("BaseCurrencySign"));
-                baseCurrency.setFullName(resultSet.getString("BaseCurrencyFullName"));
-                exchangeRate.setBaseCurrencyId(baseCurrency);
+                    Currency targetCurrency = new Currency();
+                    targetCurrency.setId(resultSet.getInt("TargetCurrencyId"));
+                    targetCurrency.setCode(resultSet.getString("TargetCurrencyCode"));
+                    targetCurrency.setSign(resultSet.getString("TargetCurrencySign"));
+                    targetCurrency.setFullName(resultSet.getString("TargetCurrencyFullName"));
+                    exchangeRate.setTargetCurrencyId(targetCurrency);
 
-                Currency targetCurrency = new Currency();
-                targetCurrency.setId(resultSet.getInt("TargetCurrencyId"));
-                targetCurrency.setCode(resultSet.getString("TargetCurrencyCode"));
-                targetCurrency.setSign(resultSet.getString("TargetCurrencySign"));
-                targetCurrency.setFullName(resultSet.getString("TargetCurrencyFullName"));
-                exchangeRate.setTargetCurrencyId(targetCurrency);
-
-                exchangeRate.setId(resultSet.getInt("id"));
-                exchangeRate.setRate(resultSet.getBigDecimal("Rate"));
+                    exchangeRate.setId(resultSet.getInt("id"));
+                    exchangeRate.setRate(resultSet.getBigDecimal("Rate"));
+                }
             }
-        } finally {
-            jdbcConnection.endDb();
         }
         return exchangeRate;
     }
 
     private int getIdFromDatabase(Currency currency) throws SQLException {
-        String sql1 = "select ID from currencies where Code = ?;";
-        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql1)
+        String sql = "select ID from currencies where Code = ?;";
+        try (JdbcConnection jdbcConnection = new JdbcConnection();
+             PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
         ) {
             statement.setString(1, currency.getCode());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                currency.setId(resultSet.getInt("id"));
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    currency.setId(resultSet.getInt("id"));
+                }
             }
         }
         return currency.getId();

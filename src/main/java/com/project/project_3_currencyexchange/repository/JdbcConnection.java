@@ -5,9 +5,10 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 
-public class JdbcConnection {
+public class JdbcConnection implements AutoCloseable {
     Connection connection;
-    public void startDb() throws SQLException {
+
+    public JdbcConnection() throws SQLException {
         Properties properties = new Properties();
         try (InputStream inputStream = getClass().getResourceAsStream("/db.properties")) {
             properties.load(inputStream);
@@ -36,9 +37,14 @@ public class JdbcConnection {
         return connection;
     }
 
-    public void endDb() throws SQLException {
-        System.out.println("Соединение завершено!");
-        connection.close();
+    @Override
+    public void close() {
+        try {
+            this.connection.close();
+            System.out.println("Соединение завершено!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

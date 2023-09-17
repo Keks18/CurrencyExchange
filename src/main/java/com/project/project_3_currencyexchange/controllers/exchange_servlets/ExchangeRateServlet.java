@@ -22,9 +22,11 @@ import java.sql.SQLSyntaxErrorException;
 @WebServlet(name = "exchangeRateServlet", value = "/exchangeRate/*")
 public class ExchangeRateServlet extends PatcherServlet {
     ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();
+
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
     }
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
@@ -32,12 +34,12 @@ public class ExchangeRateServlet extends PatcherServlet {
         ExchangeRate exchangeRate = new ExchangeRate();
         String pathInfo = req.getPathInfo();
 
-        if (pathInfo != null && pathInfo.length() > 1){
+        if (pathInfo != null && pathInfo.length() > 1) {
             String currencyCode1 = pathInfo.substring(1, 4);
             String currencyCode2 = pathInfo.substring(4);
             try {
                 exchangeRate = exchangeRateService.findByCode(currencyCode1, currencyCode2);
-                if (exchangeRate.isEmpty()){
+                if (exchangeRate.isEmpty()) {
                     ExchangeRateServletExceptions.exchangeRateNotFound(resp);
                 }
             } catch (SQLException e) {
@@ -50,6 +52,7 @@ public class ExchangeRateServlet extends PatcherServlet {
         writer.println(JsonTransformer.transformToJson(exchangeRate));
         writer.close();
     }
+
     @Override
     public void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
@@ -63,7 +66,7 @@ public class ExchangeRateServlet extends PatcherServlet {
         if (rateParam != null && !rateParam.isEmpty()) {
             rate = new BigDecimal(rateParam);
         }
-        if (rate == null){
+        if (rate == null) {
             ServletExceptions.someFieldIsEmpty(resp);
             return;
         }

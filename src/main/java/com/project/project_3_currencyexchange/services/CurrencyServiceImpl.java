@@ -8,20 +8,17 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CurrencyServiceImpl implements CurrencyService{
+public class CurrencyServiceImpl implements CurrencyService {
     CurrencyDAO currencyDAO = new CurrencyDAOJdbc();
-
-    public CurrencyServiceImpl() {
-    }
 
     @Override
     public List<Currency> findAll() throws SQLException {
-            return currencyDAO.findAll();
+        return currencyDAO.findAll();
     }
 
     @Override
     public Currency findByCode(String code) throws SQLException {
-            return currencyDAO.findByCode(code);
+        return currencyDAO.findByCode(code);
     }
 
     @Override
