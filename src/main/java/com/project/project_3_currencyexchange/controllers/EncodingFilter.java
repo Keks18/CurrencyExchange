@@ -11,14 +11,16 @@ import javax.servlet.ServletResponse;
 import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/*"}, initParams = {
-        @WebInitParam(name = "encoding", value = "UTF-8")
+        @WebInitParam(name = "encoding", value = "UTF-8"),
+        @WebInitParam(name = "type", value = "application/json")
 })
 public class EncodingFilter implements Filter {
     private String encoding;
-
+    private String type;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         encoding = filterConfig.getInitParameter("encoding");
+        type = filterConfig.getInitParameter("type");
     }
 
     @Override
@@ -26,6 +28,7 @@ public class EncodingFilter implements Filter {
             throws IOException, ServletException {
         request.setCharacterEncoding(encoding);
         response.setCharacterEncoding(encoding);
+        response.setContentType(type);
         chain.doFilter(request, response);
     }
 }

@@ -26,7 +26,6 @@ public class ExchangeRatesServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
 
         List<ExchangeRate> exchangeRates;
@@ -43,7 +42,6 @@ public class ExchangeRatesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
         ExchangeRate exchangeReq = new ExchangeRate();
         ExchangeRate exchangeResp;

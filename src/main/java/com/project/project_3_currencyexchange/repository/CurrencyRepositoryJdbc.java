@@ -1,14 +1,13 @@
-package com.project.project_3_currencyexchange.dao;
+package com.project.project_3_currencyexchange.repository;
 
 import com.project.project_3_currencyexchange.entities.Currency;
-import com.project.project_3_currencyexchange.repository.JdbcConnection;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurrencyDAOJdbc implements CurrencyDAO {
+public class CurrencyRepositoryJdbc implements CurrencyRepository {
 
     @Override
     public List<Currency> findAll() throws SQLException {

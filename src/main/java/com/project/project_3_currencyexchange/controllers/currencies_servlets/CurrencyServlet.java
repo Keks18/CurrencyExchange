@@ -20,7 +20,6 @@ public class CurrencyServlet extends HttpServlet {
     CurrencyService currencyService = new CurrencyServiceImpl();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json");
 
         String pathInfo = req.getPathInfo();
         if (pathInfo != null && pathInfo.length() > 1) {

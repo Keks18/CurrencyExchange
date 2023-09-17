@@ -1,5 +1,7 @@
 package com.project.project_3_currencyexchange.repository;
 
+import com.project.project_3_currencyexchange.exceptions.ConnectionExceptions;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -13,7 +15,7 @@ public class JdbcConnection implements AutoCloseable {
         try (InputStream inputStream = getClass().getResourceAsStream("/db.properties")) {
             properties.load(inputStream);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ConnectionExceptions.handlePropertiesLoadingFailure(e);
         }
 
         String jdbcUrl = properties.getProperty("db.url");
@@ -22,14 +24,12 @@ public class JdbcConnection implements AutoCloseable {
 
         String driverName = properties.getProperty("db.driverName");
         try {
-            // Загружаем драйвер MySQL
             Class.forName(driverName);
 
             connection = DriverManager.getConnection(jdbcUrl, username, password);
-            System.out.println("Соединение установлено!");
 
         } catch (ClassNotFoundException e) {
-            System.out.println("Драйвер MySQL не найден!");
+            ConnectionExceptions.handleDriverNotFound(e);
         }
     }
 
@@ -41,9 +41,8 @@ public class JdbcConnection implements AutoCloseable {
     public void close() {
         try {
             this.connection.close();
-            System.out.println("Соединение завершено!");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            ConnectionExceptions.handleConnectionCloseError(e);
         }
     }
 }

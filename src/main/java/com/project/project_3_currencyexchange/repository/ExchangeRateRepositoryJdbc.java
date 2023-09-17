@@ -1,15 +1,14 @@
-package com.project.project_3_currencyexchange.dao;
+package com.project.project_3_currencyexchange.repository;
 
 import com.project.project_3_currencyexchange.entities.Currency;
 import com.project.project_3_currencyexchange.entities.ExchangeRate;
-import com.project.project_3_currencyexchange.repository.JdbcConnection;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
+public class ExchangeRateRepositoryJdbc implements ExchangeRateRepository {
 
     @Override
     public List<ExchangeRate> findAll() throws SQLException {

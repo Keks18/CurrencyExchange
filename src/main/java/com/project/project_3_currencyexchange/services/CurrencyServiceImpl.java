@@ -1,7 +1,7 @@
 package com.project.project_3_currencyexchange.services;
 
-import com.project.project_3_currencyexchange.dao.CurrencyDAO;
-import com.project.project_3_currencyexchange.dao.CurrencyDAOJdbc;
+import com.project.project_3_currencyexchange.repository.CurrencyRepository;
+import com.project.project_3_currencyexchange.repository.CurrencyRepositoryJdbc;
 import com.project.project_3_currencyexchange.entities.Currency;
 
 import java.math.BigDecimal;
@@ -9,16 +9,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CurrencyServiceImpl implements CurrencyService {
-    CurrencyDAO currencyDAO = new CurrencyDAOJdbc();
+    CurrencyRepository currencyRepository = new CurrencyRepositoryJdbc();
 
     @Override
     public List<Currency> findAll() throws SQLException {
-        return currencyDAO.findAll();
+        return currencyRepository.findAll();
     }
 
     @Override
     public Currency findByCode(String code) throws SQLException {
-        return currencyDAO.findByCode(code);
+        return currencyRepository.findByCode(code);
     }
 
     @Override
@@ -33,6 +33,6 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public Currency save(Currency currency) throws SQLException {
-        return currencyDAO.save(currency);
+        return currencyRepository.save(currency);
     }
 }

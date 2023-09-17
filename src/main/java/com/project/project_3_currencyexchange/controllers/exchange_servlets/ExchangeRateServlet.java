@@ -29,7 +29,6 @@ public class ExchangeRateServlet extends PatcherServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
         ExchangeRate exchangeRate = new ExchangeRate();
         String pathInfo = req.getPathInfo();
@@ -55,7 +54,6 @@ public class ExchangeRateServlet extends PatcherServlet {
 
     @Override
     public void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
         ExchangeRate exchangeRate = new ExchangeRate();
         PrintWriter writer = resp.getWriter();
         String pathInfo = req.getPathInfo();

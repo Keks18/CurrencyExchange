@@ -1,7 +1,7 @@
 package com.project.project_3_currencyexchange.services;
 
-import com.project.project_3_currencyexchange.dao.ExchangeRateDAO;
-import com.project.project_3_currencyexchange.dao.ExchangeRateDAOJdbc;
+import com.project.project_3_currencyexchange.repository.ExchangeRateRepository;
+import com.project.project_3_currencyexchange.repository.ExchangeRateRepositoryJdbc;
 import com.project.project_3_currencyexchange.dto.ExchangeDTO;
 import com.project.project_3_currencyexchange.entities.ExchangeRate;
 
@@ -11,12 +11,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ExchangeRateServiceImpl implements ExchangeRateService {
-    ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAOJdbc();
+    ExchangeRateRepository exchangeRateRepository = new ExchangeRateRepositoryJdbc();
     CurrencyService currencyService = new CurrencyServiceImpl();
 
     @Override
     public List<ExchangeRate> findAll() throws SQLException {
-        return exchangeRateDAO.findAll();
+        return exchangeRateRepository.findAll();
     }
 
     @Override
@@ -26,17 +26,17 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
     @Override
     public ExchangeRate update(BigDecimal rate, String code1, String code2) throws SQLException {
-        return exchangeRateDAO.update(rate, code1, code2);
+        return exchangeRateRepository.update(rate, code1, code2);
     }
 
     @Override
     public ExchangeRate save(ExchangeRate exchangeRate) throws SQLException {
-        return exchangeRateDAO.save(exchangeRate);
+        return exchangeRateRepository.save(exchangeRate);
     }
 
     @Override
     public ExchangeRate findByCode(String code1, String code2) throws SQLException {
-        return exchangeRateDAO.findByCode(code1, code2);
+        return exchangeRateRepository.findByCode(code1, code2);
     }
 
     @Override

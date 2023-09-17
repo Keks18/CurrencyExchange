@@ -23,7 +23,6 @@ public class ExchangeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
         String from = req.getParameter("from");
         String to = req.getParameter("to");
