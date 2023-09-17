@@ -45,27 +45,31 @@ public class ExchangeRateServiceImpl implements ExchangeRateService{
         exchangeDTO.setBaseCurrencyId(currencyService.findByCode(from));
         exchangeDTO.setTargetCurrencyId(currencyService.findByCode(to));
 
-        if (findByCode(from, to).getRate() != null){
-            exchangeDTO.setRate(findByCode(from, to).getRate());
-        }
-
-        if (findByCode(to, from).getRate() != null){
-            BigDecimal rateToFrom = findByCode(to, from).getRate();
-            BigDecimal rateFromTo = BigDecimal.ONE.divide(rateToFrom, 6, RoundingMode.HALF_UP);
+        BigDecimal rateFromTo = findByCode(from, to).getRate();
+        if (rateFromTo != null){
             exchangeDTO.setRate(rateFromTo);
+            exchangeDTO.exchangeCurrency();
+            return exchangeDTO;
         }
 
+        BigDecimal rateToFrom = findByCode(to, from).getRate();
+        if (rateToFrom != null){
+            rateFromTo = BigDecimal.ONE.divide(rateToFrom, 6, RoundingMode.HALF_UP);
+            exchangeDTO.setRate(rateFromTo);
+            exchangeDTO.exchangeCurrency();
+            return exchangeDTO;
+        }
+
+        BigDecimal rateUsdFrom = findByCode("USD", from).getRate();
+        BigDecimal rateUsdTo = findByCode("USD", to).getRate();
         if (
-                (findByCode("USD", from).getRate() != null)
+                (rateUsdFrom != null)
                 &&
-                (findByCode("USD", from).getRate()) != null)
+                (rateUsdTo) != null)
         {
-            BigDecimal rateUsdFrom = findByCode("USD", from).getRate();
-            BigDecimal rateUsdTo = findByCode("USD", to).getRate();
             BigDecimal rate = rateUsdTo.divide(rateUsdFrom, 6, RoundingMode.HALF_UP);
             exchangeDTO.setRate(rate);
         }
-
         exchangeDTO.exchangeCurrency();
         return exchangeDTO;
     }

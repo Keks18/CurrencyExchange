@@ -9,8 +9,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
+public class ExchangeRateDAOJdbc implements ExchangeRateDAO {
     JdbcConnection jdbcConnection = new JdbcConnection();
+
     @Override
     public List<ExchangeRate> findAll() throws SQLException {
         List<ExchangeRate> exchangeRates = new ArrayList<>();
@@ -75,20 +76,20 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
                 "SET e.Rate = ? " +
                 "WHERE b.Code = ? and t.Code = ?;";
 
-       try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
-             ) {
-           statement.setBigDecimal(1, rate);
-           statement.setString(2, code1);
-           statement.setString(3, code2);
-           int res = statement.executeUpdate();
+        try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
+        ) {
+            statement.setBigDecimal(1, rate);
+            statement.setString(2, code1);
+            statement.setString(3, code2);
+            int res = statement.executeUpdate();
 
-           if (res != 1){
-               throw new SQLSyntaxErrorException();
-           }
+            if (res != 1) {
+                throw new SQLSyntaxErrorException();
+            }
 
-       } finally {
-           jdbcConnection.endDb();
-       }
+        } finally {
+            jdbcConnection.endDb();
+        }
         return findByCode(code1, code2);
     }
 
@@ -107,9 +108,9 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
             statement.setInt(1, exchangeRate.getBaseCurrencyId().getId());
             statement.setInt(2, exchangeRate.getTargetCurrencyId().getId());
             statement.setBigDecimal(3, exchangeRate.getRate());
-            int rowsAffected  = statement.executeUpdate();
+            int rowsAffected = statement.executeUpdate();
 
-            if (rowsAffected  != 1){
+            if (rowsAffected != 1) {
                 throw new SQLIntegrityConstraintViolationException("Ошибка нарушения ограничения целостности данных");
             }
         } finally {
@@ -117,6 +118,7 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
         }
         return findByCode(exchangeRate.getBaseCurrencyId().getCode(), exchangeRate.getTargetCurrencyId().getCode());
     }
+
     @Override
     public ExchangeRate findByCode(String code1, String code2) throws SQLException {
         ExchangeRate exchangeRate = new ExchangeRate();
@@ -138,7 +140,7 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
                 "WHERE b.Code = ? and t.Code = ?;";
 
         try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql);
-             ) {
+        ) {
             statement.setString(1, code1);
             statement.setString(2, code2);
             ResultSet resultSet = statement.executeQuery();
@@ -167,13 +169,14 @@ public class ExchangeRateDAOJdbc implements ExchangeRateDAO{
         }
         return exchangeRate;
     }
+
     private int getIdFromDatabase(Currency currency) throws SQLException {
         String sql1 = "select ID from currencies where Code = ?;";
         try (PreparedStatement statement = jdbcConnection.getConnection().prepareStatement(sql1)
         ) {
             statement.setString(1, currency.getCode());
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 currency.setId(resultSet.getInt("id"));
             }
         }
