@@ -19,7 +19,7 @@ import java.util.List;
 
 @WebServlet(name = "currenciesServlet", value = "/currencies")
 public class CurrenciesServlet extends HttpServlet {
-    CurrencyService currencyService = new CurrencyServiceImpl();
+    static final CurrencyService currencyService = new CurrencyServiceImpl();
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter writer = resp.getWriter();

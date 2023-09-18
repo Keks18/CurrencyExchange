@@ -21,7 +21,7 @@ import java.sql.SQLSyntaxErrorException;
 
 @WebServlet(name = "exchangeRateServlet", value = "/exchangeRate/*")
 public class ExchangeRateServlet extends PatcherServlet {
-    ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();
+    static final ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);

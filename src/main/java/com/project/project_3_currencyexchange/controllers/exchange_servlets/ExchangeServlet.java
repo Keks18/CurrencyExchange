@@ -19,7 +19,7 @@ import java.sql.SQLException;
 
 @WebServlet(name = "exchangeServlet", value = "/exchange")
 public class ExchangeServlet extends HttpServlet {
-    ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();
+    static final ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

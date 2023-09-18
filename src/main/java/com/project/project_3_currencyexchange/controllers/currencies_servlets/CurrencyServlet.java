@@ -6,7 +6,6 @@ import com.project.project_3_currencyexchange.services.CurrencyService;
 import com.project.project_3_currencyexchange.services.CurrencyServiceImpl;
 import com.project.project_3_currencyexchange.utils.JsonTransformer;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +16,7 @@ import java.sql.SQLException;
 
 @WebServlet(name = "currencyServlet", value = "/currency/*")
 public class CurrencyServlet extends HttpServlet {
-    CurrencyService currencyService = new CurrencyServiceImpl();
+    static final CurrencyService currencyService = new CurrencyServiceImpl();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 

@@ -22,7 +22,7 @@ import java.util.List;
 
 @WebServlet(name = "exchangeRatesServlet", value = "/exchangeRates")
 public class ExchangeRatesServlet extends HttpServlet {
-    ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();
+    static final ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -5,7 +5,6 @@ import com.project.project_3_currencyexchange.utils.JsonTransformer;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class ServletExceptions {
     public static void databaseOperationFail(HttpServletResponse resp, Exception e) throws IOException {
