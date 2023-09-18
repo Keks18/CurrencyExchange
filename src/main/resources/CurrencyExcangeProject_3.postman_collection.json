@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "3dfba198-9385-4acc-bfdc-79fe85f7c333",
+		"name": "CurrencyExcangeProject_3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26454528"
+	},
+	"item": [
+		{
+			"name": "/currencies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/currencies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"currencies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/currency/*",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/currency/EUR",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"currency",
+						"EUR"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/currencies",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "code",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Yuan Renminbi",
+							"type": "text"
+						},
+						{
+							"key": "sign",
+							"value": "¥",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/currencies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"currencies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/exchangeRates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/exchangeRates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchangeRates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/exchangeRate/*",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/exchangeRate/UAHUSD",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchangeRate",
+						"UAHUSD"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/exchangeRates",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/exchangeRates?baseCurrencyCode=CNY&targetCurrencyCode=GBP&rate=0.11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchangeRates"
+					],
+					"query": [
+						{
+							"key": "baseCurrencyCode",
+							"value": "CNY"
+						},
+						{
+							"key": "targetCurrencyCode",
+							"value": "GBP"
+						},
+						{
+							"key": "rate",
+							"value": "0.11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/exchangeRate/*",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/exchangeRate/CNYGBP?rate=0.15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchangeRate",
+						"CNYGBP"
+					],
+					"query": [
+						{
+							"key": "rate",
+							"value": "0.15"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/exchange?from=BASE_CURRENCY_CODE&to=TARGET_CURRENCY_CODE&amount=$AMOUNT",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
