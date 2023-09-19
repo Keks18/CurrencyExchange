@@ -2,6 +2,7 @@
 
 This is a simple Currency Exchange API that allows you to manage currencies and exchange rates. It provides various endpoints to perform currency-related operations.
 
+Technical task https://zhukovsd.github.io/java-backend-learning-course/Projects/CurrencyExchange/
 ## Technologies / Tools Used
 
 - JDBC
